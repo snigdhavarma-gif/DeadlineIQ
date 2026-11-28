@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,7 +9,7 @@ public class Main {
         System.out.println("Your personal assignment workload planner.");
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Assignment> assignments = new ArrayList<>();
+        ArrayList<Assignment> assignments = AssignmentStorage.loadAssignments();
 
         while (true) {
             System.out.println("\n===== DeadlineIQ =====");
@@ -45,10 +46,12 @@ public class Main {
                         System.out.println("Estimated hours must be a positive number.");
                         continue;
                     }
+
                     if (name.isBlank() || name.contains(",")) {
-                    System.out.println("Enter a valid name without commas.");
-                    continue;
-                }
+                        System.out.println("Enter a valid name without commas.");
+                        continue;
+                    }
+
                     assignments.add(new Assignment(name, deadline, difficulty, estimatedHours));
                     AssignmentStorage.saveAssignments(assignments);
                     System.out.println("Assignment added successfully!");
@@ -67,6 +70,22 @@ public class Main {
                         System.out.println("Difficulty: " + task.getDifficulty());
                         System.out.println("Estimated hours: " + task.getEstimatedHours());
                         System.out.println("--------------------");
+                    }
+                }
+
+            } else if (choice.equals("3")) {
+                if (assignments.isEmpty()) {
+                    System.out.println("No assignments added yet.");
+                } else {
+                    assignments.sort(
+                        Comparator.comparingDouble(PriorityCalculator::calculatePriority)
+                                  .reversed()
+                    );
+
+                    for (Assignment task : assignments) {
+                        System.out.printf("%s | Priority: %.2f%n",
+                                task.getName(),
+                                PriorityCalculator.calculatePriority(task));
                     }
                 }
 

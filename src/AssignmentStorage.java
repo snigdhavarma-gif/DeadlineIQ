@@ -19,7 +19,7 @@ public class AssignmentStorage {
     }
 
     public static ArrayList<Assignment> loadAssignments() {
-       ArrayList<Assignment> assignments = AssignmentStorage.loadAssignments();
+        ArrayList<Assignment> assignments = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
@@ -27,10 +27,11 @@ public class AssignmentStorage {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                String name = parts[0];
                 if (parts.length != 4) {
-    continue;
-}
+                    continue;
+                }
+
+                String name = parts[0];
                 LocalDate deadline = LocalDate.parse(parts[1]);
                 int difficulty = Integer.parseInt(parts[2]);
                 double estimatedHours = Double.parseDouble(parts[3]);
