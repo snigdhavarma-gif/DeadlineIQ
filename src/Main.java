@@ -90,13 +90,31 @@ public class Main {
                 }
 
             } 
-             else if (choice.equals("4")) {
-    WorkloadAnalyzer.analyzeWorkload(assignments);
-             }
-            else if (choice.equals("6")) {
+                         else if (choice.equals("4")) {
+                WorkloadAnalyzer.analyzeWorkload(assignments);
+
+            } else if (choice.equals("5")) {
+                try {
+                    System.out.print("Available study hours per day: ");
+                    double dailyHours = Double.parseDouble(scanner.nextLine());
+
+                    if (!Double.isFinite(dailyHours) || dailyHours <= 0 || dailyHours > 24) {
+                        System.out.println("Enter valid daily study hours.");
+                    } else {
+                        StudyScheduler.recommendSchedule(assignments, dailyHours);
+                    }
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Enter a number.");
+                }
+
+            } else if (choice.equals("6")) {
                 System.out.println("Goodbye!");
                 break;
             }
+             else {
+    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+}
         }
 
         scanner.close();
