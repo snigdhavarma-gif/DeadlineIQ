@@ -18,7 +18,9 @@ public class Main {
             System.out.println("3. View priorities");
             System.out.println("4. Analyze workload");
             System.out.println("5. Recommend study schedule");
-            System.out.println("6. Exit");
+            System.out.println("6. Mark assignment as complete");
+            System.out.println("7. Reset all assignments");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine();
@@ -69,6 +71,8 @@ public class Main {
                         System.out.println("Deadline: " + task.getDeadline());
                         System.out.println("Difficulty: " + task.getDifficulty());
                         System.out.println("Estimated hours: " + task.getEstimatedHours());
+                        System.out.println("Status: " + 
+                        (task.isCompleted() ? "Completed" : "Pending"));
                         System.out.println("--------------------");
                     }
                 }
@@ -83,6 +87,9 @@ public class Main {
                     );
 
                     for (Assignment task : assignments) {
+                        if (task.isCompleted()) {
+                            continue;
+                        }
                         System.out.printf("%s | Priority: %.2f%n",
                                 task.getName(),
                                 PriorityCalculator.calculatePriority(task));
@@ -107,13 +114,48 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Enter a number.");
                 }
+                } else if (choice.equals("6")) {
+    if (assignments.isEmpty()) {
+        System.out.println("No assignments available.");
+        continue;
+    }
 
-            } else if (choice.equals("6")) {
+    for (int i = 0; i < assignments.size(); i++) {
+        Assignment task = assignments.get(i);
+
+        System.out.println((i + 1) + ". " + task.getName()
+                + " | Due: " + task.getDeadline()
+                + " | " + (task.isCompleted() ? "Completed" : "Pending"));
+    }
+
+    System.out.print("Enter assignment number: ");
+
+    try {
+        int number = Integer.parseInt(scanner.nextLine());
+
+        if (number < 1 || number > assignments.size()) {
+            System.out.println("Invalid assignment number.");
+        } else {
+            Assignment task = assignments.get(number - 1);
+
+            if (task.isCompleted()) {
+                System.out.println("Assignment is already completed.");
+            } else {
+                task.markCompleted();
+                AssignmentStorage.saveAssignments(assignments);
+                System.out.println(task.getName() + " marked as complete!");
+            }
+        }
+    } catch (NumberFormatException e) {
+        System.out.println("Please enter a valid number.");
+    }
+
+            } else if (choice.equals("8")) {
                 System.out.println("Goodbye!");
                 break;
             }
              else {
-    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+    System.out.println("Invalid choice. Please enter a number from 1 to 8.");
 }
         }
 

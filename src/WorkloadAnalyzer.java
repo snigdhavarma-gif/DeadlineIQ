@@ -7,6 +7,9 @@ public class WorkloadAnalyzer {
         TreeMap<LocalDate, Double> workload = new TreeMap<>();
 
         for (Assignment task : assignments) {
+            if (task.isCompleted()) {
+                continue;
+            }
             LocalDate date = task.getDeadline();
 
             double hours = workload.getOrDefault(date, 0.0);

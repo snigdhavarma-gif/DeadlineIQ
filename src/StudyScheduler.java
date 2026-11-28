@@ -5,6 +5,9 @@ public class StudyScheduler {
     public static void recommendSchedule(
             ArrayList<Assignment> assignments, double dailyHours) {
                 for (Assignment task : assignments) {
+                            if (task.isCompleted()) {
+            continue;
+        }
     long daysNeeded = (long) Math.ceil(
         task.getEstimatedHours() / dailyHours
     );
