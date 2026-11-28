@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -19,9 +18,10 @@ public class Main {
             System.out.println("3. View priorities");
             System.out.println("4. Analyze workload");
             System.out.println("5. Recommend study schedule");
-            System.out.println("6. Mark assignment as complete");
-            System.out.println("7. Reset all assignments");
-            System.out.println("8. Exit");
+            System.out.println("6. Smart Study Planner");
+            System.out.println("7. Mark assignment as complete");
+            System.out.println("8. Reset all assignments");
+            System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine().trim();
@@ -47,17 +47,20 @@ public class Main {
                     recommendSchedule(scanner, assignments);
                     break;
                 case "6":
-                    completeAssignment(scanner, assignments);
+                    smartPlanner(scanner, assignments);
                     break;
                 case "7":
-                    resetAssignments(scanner, assignments);
+                    completeAssignment(scanner, assignments);
                     break;
                 case "8":
+                    resetAssignments(scanner, assignments);
+                    break;
+                case "9":
                     System.out.println("Goodbye!");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 8.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 9.");
             }
         }
     }
@@ -162,6 +165,56 @@ public class Main {
         }
     }
 
+    public static void smartPlanner(Scanner scanner, ArrayList<Assignment> assignments) {
+        if (noPendingAssignments(assignments)) {
+            System.out.println("No pending assignments.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("\n===== SMART STUDY PLANNER =====");
+            System.out.println("1. Deadline Risk Radar");
+            System.out.println("2. Today's Game Plan");
+            System.out.println("3. Return to main menu");
+            System.out.print("Enter your choice: ");
+
+            String choice = scanner.nextLine().trim();
+
+            if (choice.equals("3")) {
+                return;
+            }
+
+            if (!choice.equals("1") && !choice.equals("2")) {
+                System.out.println("Invalid choice. Please enter 1, 2 or 3.");
+                continue;
+            }
+
+            try {
+                if (choice.equals("1")) {
+                    System.out.print("Available study hours per day: ");
+                } else {
+                    System.out.print("Available study hours today: ");
+                }
+
+                double hours = Double.parseDouble(scanner.nextLine());
+
+                if (!Double.isFinite(hours) || hours <= 0 || hours > 24) {
+                    System.out.println("Enter valid study hours.");
+                    continue;
+                }
+
+                if (choice.equals("1")) {
+                    SmartStudyPlanner.riskRadar(assignments, hours);
+                } else {
+                    SmartStudyPlanner.gamePlan(assignments, hours);
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
     public static void completeAssignment(Scanner scanner, ArrayList<Assignment> assignments) {
         if (assignments.isEmpty()) {
             System.out.println("No assignments available.");
@@ -202,7 +255,7 @@ public class Main {
         }
     }
 
-      public static void resetAssignments(Scanner scanner, ArrayList<Assignment> assignments) {
+    public static void resetAssignments(Scanner scanner, ArrayList<Assignment> assignments) {
         if (assignments.isEmpty()) {
             System.out.println("No assignments to reset.");
             return;
