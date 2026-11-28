@@ -89,7 +89,11 @@ public class Main {
                     }
                 }
 
-            } else if (choice.equals("6")) {
+            } 
+             else if (choice.equals("4")) {
+    WorkloadAnalyzer.analyzeWorkload(assignments);
+             }
+            else if (choice.equals("6")) {
                 System.out.println("Goodbye!");
                 break;
             }
