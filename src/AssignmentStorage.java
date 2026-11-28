@@ -11,7 +11,8 @@ public class AssignmentStorage {
                 writer.write(task.getName() + ","
                         + task.getDeadline() + ","
                         + task.getDifficulty() + ","
-                        + task.getEstimatedHours() + "\n");
+                        + task.getEstimatedHours() + ","
+                        + task.isCompleted() + "\n");
             }
         } catch (IOException e) {
             System.out.println("Error saving assignments.");
@@ -27,16 +28,22 @@ public class AssignmentStorage {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                if (parts.length != 4) {
+                if (parts.length != 4 && parts.length != 5) {
                     continue;
-                }
+}
 
                 String name = parts[0];
                 LocalDate deadline = LocalDate.parse(parts[1]);
                 int difficulty = Integer.parseInt(parts[2]);
                 double estimatedHours = Double.parseDouble(parts[3]);
 
-                assignments.add(new Assignment(name, deadline, difficulty, estimatedHours));
+               Assignment task = new Assignment(name, deadline, difficulty, estimatedHours);
+
+                if (parts.length == 5 && Boolean.parseBoolean(parts[4])) {
+                    task.markCompleted();
+                }
+
+                assignments.add(task);
             }
 
         } catch (FileNotFoundException e) {

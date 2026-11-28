@@ -5,6 +5,7 @@ public class Assignment {
     private LocalDate deadline;
     private int difficulty;
     private double estimatedHours;
+    private boolean completed;
 
     public Assignment(String name, LocalDate deadline,
     int difficulty, double estimatedHours) {
@@ -12,6 +13,8 @@ public class Assignment {
     this.deadline = deadline;
     this.difficulty = difficulty;
     this.estimatedHours = estimatedHours;
+    
+    this.completed = false;
 }
 
 public String getName() {
@@ -28,5 +31,12 @@ public int getDifficulty() {
 
 public double getEstimatedHours() {
     return estimatedHours;
+}
+public boolean isCompleted() {
+    return completed;
+}
+
+public void markCompleted() {
+    this.completed = true;
 }
 }
