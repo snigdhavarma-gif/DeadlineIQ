@@ -149,6 +149,17 @@ public class Main {
     } catch (NumberFormatException e) {
         System.out.println("Please enter a valid number.");
     }
+    } else if (choice.equals("7")) {
+    System.out.print("Delete all assignments? (yes/no): ");
+    String confirmation = scanner.nextLine();
+
+    if (confirmation.equalsIgnoreCase("yes")) {
+        assignments.clear();
+        AssignmentStorage.saveAssignments(assignments);
+        System.out.println("All assignments have been reset.");
+    } else {
+        System.out.println("Reset cancelled.");
+    }
 
             } else if (choice.equals("8")) {
                 System.out.println("Goodbye!");
